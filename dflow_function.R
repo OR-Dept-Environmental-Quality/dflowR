@@ -1,8 +1,9 @@
 
 dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30") {
   
-  # Function to find the design flow based on methodology used in EPA's DFLOW with a modificaton to account for missing flow data or days with zero flow.
-  # If there is missing flow data in any particular water year, all data from that water year is not used.
+  # Function to find the design flow based on methodology used in EPA's DFLOW with a modificaton to 
+  # account for missing flow data or days with zero flow. If there is missing flow data in any 
+  # particular water year, all data from that water year is not used.
   # DFLOW 3.1 uses the USGS A193 implementation, which may be obtained as source code from http://water.usgs.gov/software/swstat.html
   # 
   # References
@@ -14,10 +15,14 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
   #       col 2 = numeric daily mean flow
   # m = Flow averaging period in days
   # R = Return period in years
-  # period.start = Optional. Character date defining the start of the calculation period in format "yyyy-mm-dd". Default is the minimum date in x.
-  # period.end = Optional. Character date defining the end of the calculation period in format "yyyy-mm-dd". Default is the maximum date in x.
-  # wy.start = Optional. Character date (excluding year) that begins the water year in format "mm-dd" Default is "10-01"
-  # wy.end = Optional. Character date (excluding year) that ends the water year in format "mm-dd". Default is "09-30".
+  # period.start = Optional. Character date defining the start of the calculation period in format "yyyy-mm-dd". 
+  #                Default is the minimum date in x.
+  # period.end = Optional. Character date defining the end of the calculation period in format "yyyy-mm-dd".
+  #              Default is the maximum date in x.
+  # wy.start = Optional. Character date (excluding year) that begins the water year in format "mm-dd". 
+  #            Default is "10-01"
+  # wy.end = Optional. Character date (excluding year) that ends the water year in format "mm-dd". 
+  #          Default is "09-30".
   # 
   # Ryan Michie
   # Oregon Department of Environmental Quality
