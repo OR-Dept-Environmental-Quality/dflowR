@@ -1,3 +1,7 @@
+
+
+source("dflow_function.R")
+
 #--- DFLOW examples using USGS text files included w/ DFLOW 3.1 download ------------------------------------------------------
 
 # Example 1
