@@ -1,5 +1,5 @@
 
-dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30") {
+dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30") {
   
   # Function to find the design flow based on methodology used in EPA's DFLOW with a modificaton to 
   # account for missing flow data or days with zero flow. If there is missing flow data in any 
@@ -15,10 +15,10 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
   #       col 2 = numeric daily mean flow
   # m = Flow averaging period in days
   # R = Return period in years
-  # period.start = Optional. Character date defining the start of the calculation period in format "yyyy-mm-dd". 
-  #                Default is the minimum date in x.
-  # period.end = Optional. Character date defining the end of the calculation period in format "yyyy-mm-dd".
-  #              Default is the maximum date in x.
+  # year.start = Optional. Year defining the start of the calculation period in format yyyy. 
+  #                Default is the year from the minimum date in x.
+  # year.end = Optional. Year defining the end of the calculation period in format yyyy.
+  #              Default is the year from the maximum date in x.
   # wy.start = Optional. Character date (excluding year) that begins the water year in format "mm-dd". 
   #            Default is "10-01"
   # wy.end = Optional. Character date (excluding year) that ends the water year in format "mm-dd". 
@@ -44,24 +44,25 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
   
   colnames(X) <-c("date", "flow")
   
-  if (is.na(period.start)) {
-    period.start <- min(X$date)
+  if (is.na(year.start)) {
+    year.start <- year(min(X$date))
   } else {
-    period.start <- as.POSIXct(period.start, format="%Y-%m-%d")
+    year.start <- as.integer(year.start)
   }
   
-  if (is.na(period.end)) {
-    period.end <- max(X$date)
+  if (is.na(year.end)) {
+    year.end <- year(max(X$date))
   } else {
-    period.end <- as.POSIXct(period.end, format="%Y-%m-%d")
+    year.end <- as.integer(year.end)
   }
   
-  # make a vector of all days starting on date wy.start in the year of period.start and 
-  # ending on date wy.end in the year of period.end.
+  # make a vector of all days starting on date wy.start in year.start and 
+  # ending on date wy.end in year.end.
   # This is to identify missing days and limit data to the period.
-  date99 <- data.frame(date=as.POSIXct(format(seq(from=as.POSIXct(paste0(year(min(X$date)),"-",wy.start), format="%Y-%m-%d"),
-                                                  to=as.POSIXct(paste0(year(max(X$date)),"-",wy.end), format="%Y-%m-%d")+86400,
+  date99 <- data.frame(date=as.POSIXct(format(seq(from=as.POSIXct(paste0(year.start,"-",wy.start), format="%Y-%m-%d"),
+                                                  to=as.POSIXct(paste0(year.end,"-",wy.end), format="%Y-%m-%d")+86400,
                                                   by="day"), "%m/%d/%Y"),format="%m/%d/%Y"))
+  
   
   X <- merge(date99, X, by="date", all.x=TRUE)
   
