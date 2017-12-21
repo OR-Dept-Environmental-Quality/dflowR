@@ -45,7 +45,6 @@ q.df <- readNWISdv(siteNumbers = "14174000",
 # Just get columns 3 and 4 (date and flow)
 q <- q.df[,c(3,4)]
 colnames(q) <-c("date", "flow")
-
 q$date <- as.POSIXct(q$date, format="%Y-%m-%d")
 
 dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
