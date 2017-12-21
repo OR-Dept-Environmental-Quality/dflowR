@@ -74,12 +74,12 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   date99 <- data.frame(date2=format(seq(from=as.POSIXct(paste0(year.start,"-",wy.start), format="%Y-%m-%d"),
                                                   to=as.POSIXct(paste0(year.end,"-",wy.end), format="%Y-%m-%d")+86400,
                                                   by="day"), "%m/%d/%Y"))
-  # character date
+  # character date for merging
   X$date2 <- format(X$date,"%m/%d/%Y")
   
   X <- merge(date99, X, by="date2", all.x=TRUE)
   
-  # back to PISIXct
+  # back to POSIXct
   X$date <- as.POSIXct(X$date2, format="%m/%d/%Y")
   X$date2 <- NULL
   
