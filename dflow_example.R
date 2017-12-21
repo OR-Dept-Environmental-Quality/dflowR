@@ -11,7 +11,7 @@ q <- q.df[,c(3,4)]
 colnames(q) <-c("date", "flow")
 q$date <- as.POSIXct(q$date, format="%m/%d/%Y")
 
-dflow(x=q, m=7, R=10, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30")
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
 
 # Example 2
 q.df  <- read.table(file= "C:/Program Files (x86)/DFLOW 3.1b/usgs02072500.txt", header = TRUE, sep ="\t", 
@@ -20,7 +20,7 @@ q <- q.df[,c(3,4)]
 colnames(q) <-c("date", "flow")
 q$date <- as.POSIXct(q$date, format="%m/%d/%Y")
 
-dflow(x=q, m=7, R=10, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30")
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
 
 # Example 3
 q.df  <- read.table(file= "C:/Program Files (x86)/DFLOW 3.1b/usgs02078000.txt", header = TRUE, sep ="\t", 
@@ -29,7 +29,7 @@ q <- q.df[,c(3,4)]
 colnames(q) <-c("date", "flow")
 q$date <- as.POSIXct(q$date, format="%m/%d/%Y")
 
-dflow(x=q, m=7, R=10, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30")
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
 
 #--- USGS web download example ------------------------------------------------------------------------------------
 
@@ -45,9 +45,10 @@ q.df <- readNWISdv(siteNumbers = "14174000",
 # Just get columns 3 and 4 (date and flow)
 q <- q.df[,c(3,4)]
 colnames(q) <-c("date", "flow")
+
 q$date <- as.POSIXct(q$date, format="%Y-%m-%d")
 
-dflow(x=q, m=7, R=10, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30")
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
 
 #--- OWRD web download example ------------------------------------------------------------------------------------
 
@@ -78,4 +79,4 @@ q <- q.df[,c(2,3)]
 colnames(q) <-c("date", "flow")
 q$date <- as.POSIXct(q$date, format="%m-%d-%Y")
 
-dflow(x=q, m=7, R=10, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30")
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
