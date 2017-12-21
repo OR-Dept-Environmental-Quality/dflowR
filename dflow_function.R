@@ -13,16 +13,28 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   # x = Data frame where, 
   #       col 1 = POSIXct date
   #       col 2 = numeric daily mean flow
+  #
   # m = Flow averaging period in days
+  #
   # R = Return period in years
-  # year.start = Optional. Year defining the start of the calculation period in format yyyy. 
-  #                Default is the year from the minimum date in x.
-  # year.end = Optional. Year defining the end of the calculation period in format yyyy.
-  #              Default is the year from the maximum date in x.
+  #
+  # year.start = Optional. The year defining the start of the calculation period. 
+  #             Should be in integer format yyyy. If not specified the 
+  #             default will be the minimum date in x.
+  #
+  # year.end = Optional. The year defining the end of the calculation period. 
+  #             Should be in integer format yyyy. If not specified the 
+  #             default will be the maximum date in x.
+  #
   # wy.start = Optional. Character date (excluding year) that begins the water year in format "mm-dd". 
   #            Default is "10-01"
+  #
   # wy.end = Optional. Character date (excluding year) that ends the water year in format "mm-dd". 
   #          Default is "09-30".
+  #
+  # If a particular season is desired, set wy.start and wy.end arguments to correspond to the beginning 
+  # and ending dates of the season. The season does not have to span an entire year. Only flow records 
+  # that fall within the season will be used in the calculations.
   # 
   # Ryan Michie
   # Oregon Department of Environmental Quality

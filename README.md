@@ -20,7 +20,7 @@ References:
 ## Usage
 
 ```R
-dflow(x, m, r, period.start, period.end, wy.start, wy.end)
+dflow(x, m, r, year.start, year.end, wy.start, wy.end)
 ```
 
 `x` = A data frame object where,
@@ -31,12 +31,12 @@ dflow(x, m, r, period.start, period.end, wy.start, wy.end)
 
 `R` = Return period in years
 
-`period.start` = Optional. The date defining the start of the calculation period. 
-				 Should be in character format "yyyy-mm-dd". If not specified the 
-				 default will be the minimum date in x.
+`year.start` = Optional. The year defining the start of the calculation period. 
+				Should be in integer format yyyy. If not specified the 
+				default will be the minimum date in x.
 
-`period.end` = 	Optional. The date defining the end of the calculation period. 
-				Should be in character format "yyyy-mm-dd". If not specified the 
+`year.end` = 	Optional. The year defining the end of the calculation period. 
+				Should be in integer format yyyy. If not specified the 
 				default will be the maximum date in x.
 
 `wy.start` = Optional. The water year beginning date (excluding year). The date 
@@ -64,5 +64,5 @@ q <- q.df[,c(3,4)]
 colnames(q) <-c("date", "flow")
 q$date <- as.POSIXct(q$date, format="%Y-%m-%d")
 
-dflow(x=q, m=7, R=10, period.start=NA, period.end=NA, wy.start="10-01", wy.end="09-30")
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
 ```
