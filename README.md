@@ -31,13 +31,13 @@ dflow(x, m, r, year.start, year.end, wy.start, wy.end)
 
 `R` = Return period in years
 
-`year.start` = Optional. The year defining the start of the calculation period. 
-				Should be in integer format yyyy. If not specified the 
-				default will be the minimum date in x.
+`year.start` = Optional. The starting year of the calculation period. 
+				Should be in integer format as yyyy. If not specified the 
+				default will be the year of the minimum date in x.
 
-`year.end` = 	Optional. The year defining the end of the calculation period. 
-				Should be in integer format yyyy. If not specified the 
-				default will be the maximum date in x.
+`year.end` = 	Optional. The ending year of the calculation period. 
+				Should be in integer format as yyyy. If not specified the 
+				default will be the year of the maximum date in x.
 
 `wy.start` = Optional. The water year beginning date (excluding year). The date 
 			 should be in character format "mm-dd". If not specified the default is "10-01".
