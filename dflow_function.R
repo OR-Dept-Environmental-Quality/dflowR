@@ -69,15 +69,18 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   }
   
   # make a character vector of all days starting on date wy.start in the year of period.start and 
-  # ending on date wy.end in the year of period.end.
+  # ending on date wy.end + m-1 days in the year of period.end.
   # This is to identify missing days and limit data to the period.
   date99 <- data.frame(date2=format(seq(from=as.POSIXct(paste0(year.start,"-",wy.start), format="%Y-%m-%d"),
-                                                  to=as.POSIXct(paste0(year.end,"-",wy.end), format="%Y-%m-%d")+86400,
-                                                  by="day"), "%m/%d/%Y"))
+                                                  to=as.POSIXct(paste0(year.end,"-",wy.end), format="%Y-%m-%d")+(86400*(m-1)),
+                                                  by="day"), "%m/%d/%Y"),stringsAsFactors = FALSE)
+  
+  X <- X[with(X, order(date)), ]
+  
   # character date for merging
   X$date2 <- format(X$date,"%m/%d/%Y")
   
-  X <- merge(date99, X, by="date2", all.x=TRUE)
+  X <- merge(x=date99, y=X, by="date2", all.x=TRUE)
   
   # back to POSIXct
   X$date <- as.POSIXct(X$date2, format="%m/%d/%Y")
@@ -96,8 +99,7 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   X <- X[with(X, order(date)), ]
   
   # Calculate the m-days rolling average
-  X$m.avg <- ave(X$flow, X$water.year, FUN = 
-                   function(x) rollapply(zoo(x), m, mean, fill = NA, align = "left"))
+  X$m.avg <- rollapply(zoo(X$flow), m, mean, fill = NA, align = "left")
   
   # filter to days only within the water year
   # start and end water year in ordinal days not accounting for leap years
@@ -115,9 +117,9 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   
   # summary of water years with missing flow data
   qc.NA <- as.tbl(X) %>%
-    select(water.year, flow) %>%
+    select(water.year, m.avg) %>%
     group_by(water.year) %>%
-    summarise(na.count = sum(is.na(flow)))
+    summarise(na.count = sum(is.na(m.avg)))
   
   # the water years to keep
   keep.wy <- unique(qc.NA[qc.NA$na.count == 0,]$water.year)
@@ -138,7 +140,7 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   
   Y$log.m.avg <- log(Y$m.avg)
   
-  # remove -Inf and NaN
+  # remove zero or negative flows (-Inf and NaN)
   y <- Y[!(is.infinite(Y$log.m.avg) | is.na(Y$log.m.avg)),]$log.m.avg
   
   N <- length(y)
