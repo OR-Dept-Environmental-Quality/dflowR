@@ -56,15 +56,20 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
     year.end <- as.integer(year.end)
   }
   
-  # make a vector of all days starting on date wy.start in year.start and 
-  # ending on date wy.end in year.end.
+  # make a character vector of all days starting on date wy.start in the year of period.start and 
+  # ending on date wy.end in the year of period.end.
   # This is to identify missing days and limit data to the period.
-  date99 <- data.frame(date=as.POSIXct(format(seq(from=as.POSIXct(paste0(year.start,"-",wy.start), format="%Y-%m-%d"),
+  date99 <- data.frame(date2=format(seq(from=as.POSIXct(paste0(year.start,"-",wy.start), format="%Y-%m-%d"),
                                                   to=as.POSIXct(paste0(year.end,"-",wy.end), format="%Y-%m-%d")+86400,
-                                                  by="day"), "%m/%d/%Y"),format="%m/%d/%Y"))
+                                                  by="day"), "%m/%d/%Y"))
+  # character date
+  X$date2 <- format(X$date,"%m/%d/%Y")
   
+  X <- merge(date99, X, by="date2", all.x=TRUE)
   
-  X <- merge(date99, X, by="date", all.x=TRUE)
+  # back to PISIXct
+  X$date <- as.POSIXct(X$date2, format="%m/%d/%Y")
+  X$date2 <- NULL
   
   # Add year
   X$year <- year(X$date)
