@@ -3,7 +3,7 @@
 R function to find the design flow, such as the 7Q10, based on methodology used 
 in EPA's DFLOW with a modification to account for missing flow data or days with zero flow. 
 If there is missing flow data in any particular water year, all data from that water 
-year is not. This approach is recommended by [EPA][1] (although not implemented in DFLOW 3.1) 
+year is not used. This approach is recommended by [EPA][1] (although not implemented in DFLOW 3.1) 
 and applied in USGS's [SWSTAT][2] program.
 
 I have double-checked that this function produces values consistent 
