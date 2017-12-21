@@ -27,10 +27,10 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
   # Ryan Michie
   # Oregon Department of Environmental Quality
   
+  require(dplyr)
   require(lubridate)
   require(zoo)
-  require(dplyr)
-  
+
   X <- x
   
   # Error checking
@@ -56,11 +56,14 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
     period.end <- as.POSIXct(period.end, format="%Y-%m-%d")
   }
   
-  # Add and missing days
-  date99 <- data.frame(date=as.POSIXct(format(seq(from=min(X$date),
-                       to=max(X$date)+86400,by="day"), "%m/%d/%Y"),format="%m/%d/%Y"))
+  # make a vector of all days starting on date wy.start in the year of period.start and 
+  # ending on date wy.end in the year of period.end.
+  # This is to identify missing days and limit data to the period.
+  date99 <- data.frame(date=as.POSIXct(format(seq(from=as.POSIXct(paste0(year(min(X$date)),"-",wy.start), format="%Y-%m-%d"),
+                                                  to=as.POSIXct(paste0(year(max(X$date)),"-",wy.end), format="%Y-%m-%d")+86400,
+                                                  by="day"), "%m/%d/%Y"),format="%m/%d/%Y"))
   
-  X <- merge(date99, X, by="date")
+  X <- merge(date99, X, by="date", all.x=TRUE)
   
   # Add year
   X$year <- year(X$date)
@@ -89,13 +92,12 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
       season <- c(wy.start:365, 1:wy.end)
   }
   
-  # limit to dates to the period and only those in the water year
-  X <- X[(X$date >= period.start & X$date <= period.end), ]
+  # limit to dates in the water year season
   X <- X[X$jday %in% season,]
   
-
   # summary of water years with missing flow data
-  qc.NA <- X %>%
+  qc.NA <- as.tbl(X) %>%
+    select(water.year, flow) %>%
     group_by(water.year) %>%
     summarise(na.count = sum(is.na(flow)))
   
@@ -107,7 +109,8 @@ dflow <- function(x, m, R, period.start=NA, period.end=NA, wy.start="10-01", wy.
   X <-X[X$water.year %in% keep.wy,]
   
   # vector of the lowest m-day rolling average flow in each water year
-  Y <- X %>% select(water.year, m.avg) %>%
+  Y <- as.tbl(X) %>% 
+    select(water.year, m.avg) %>%
     group_by(water.year) %>%
     summarise(m.avg = min(m.avg, na.rm=TRUE))
   
