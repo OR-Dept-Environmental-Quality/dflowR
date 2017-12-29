@@ -50,7 +50,21 @@ If a particular season is desired, set wy.start and wy.end arguments to correspo
 ### Example
 
 ```R
+
 require(dataRetrieval)
+source("dflow_function.R")
+
+# -- Example using USGS text files included w/ DFLOW 3.1 download ----
+
+q.df  <- read.table(file= "C:/Program Files (x86)/DFLOW 3.1b/usgs02072000.txt", header = TRUE, sep ="\t", 
+                    skip=29, stringsAsFactors=FALSE )
+q <- q.df[,c(3,4)]
+colnames(q) <-c("date", "flow")
+q$date <- as.POSIXct(q$date, format="%m/%d/%Y")
+
+dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-30")
+
+# -- USGS web download example ----
 
 # download flow data
 q.df <- readNWISdv(siteNumbers = "14174000",
