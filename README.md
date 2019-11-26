@@ -2,7 +2,7 @@
 
 R function to find the design flow, such as the 7Q10, based on methodology used 
 in EPA's DFLOW with a modification to account for missing flow data or days with zero flow. 
-If there is missing flow data in any particular water year, all data from that water 
+If there are missing flow data in any particular water year, all data from that water 
 year is not used. This approach is recommended by [EPA][1] (although not implemented in DFLOW 3.1) 
 and applied in USGS's [SWSTAT][2] program.
 
@@ -10,11 +10,11 @@ I have double-checked that this function produces values consistent
 with DFLOW 3.1 (in cases without missing data), but there still may be areas 
 of the code that need improvement. Use at your own risk.
 
-[1]: https://www.epa.gov/waterdata/technical-support-dflow#xqy
+[1]: https://www.epa.gov/ceam/technical-support-dflow#xqy
 [2]: https://water.usgs.gov/software/SWSTAT/
 
 References:
-+ https://www.epa.gov/waterdata/dflow
++ https://www.epa.gov/ceam/dflow
 + https://nepis.epa.gov/Exe/ZyPDF.cgi/30001JEH.PDF?Dockey=30001JEH.PDF
 
 ## Usage
@@ -51,7 +51,7 @@ If a particular season is desired, set wy.start and wy.end arguments to correspo
 
 ```R
 
-require(dataRetrieval)
+library(dataRetrieval)
 source("dflow_function.R")
 
 # -- Example using USGS text files included w/ DFLOW 3.1 download ----
