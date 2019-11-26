@@ -7,8 +7,9 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   # DFLOW 3.1 uses the USGS A193 implementation, which may be obtained as source code from http://water.usgs.gov/software/swstat.html
   # 
   # References
-  # https://www.epa.gov/waterdata/dflow
+  # https://www.epa.gov/ceam/dflow
   # https://nepis.epa.gov/Exe/ZyPDF.cgi/30001JEH.PDF?Dockey=30001JEH.PDF
+  # https://www.epa.gov/ceam/technical-support-dflow#xqy
   #
   # x = Data frame where, 
   #       col 1 = POSIXct date
@@ -39,9 +40,9 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   # Ryan Michie
   # Oregon Department of Environmental Quality
   
-  require(dplyr)
-  require(lubridate)
-  require(zoo)
+  library(dplyr)
+  library(lubridate)
+  library(zoo)
 
   X <- x
   
@@ -87,24 +88,24 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   X$date2 <- NULL
   
   # Add year
-  X$year <- year(X$date)
+  X$year <- lubridate::year(X$date)
   
   # Add ordinal day assuming non leap year,
-  X$jday <- yday(as.POSIXct(paste0("1900-",month(X$date),"-",day(X$date)), format="%Y-%m-%d"))
+  X$jday <- lubridate::yday(as.POSIXct(paste0("1900-",month(X$date),"-",day(X$date)), format="%Y-%m-%d"))
   
   # define water year
-  X$water.year <- ifelse(X$jday >= yday(as.POSIXct(paste0(X$year,"-",wy.start, format="%Y-%m-%d"))), 
+  X$water.year <- ifelse(X$jday >= lubridate::yday(as.POSIXct(paste0(X$year,"-",wy.start, format="%Y-%m-%d"))), 
                          X$year + 1, X$year)
   
   X <- X[with(X, order(date)), ]
   
   # Calculate the m-days rolling average
-  X$m.avg <- rollapply(zoo(X$flow), m, mean, fill = NA, align = "left")
+  X$m.avg <- zoo::rollapply(zoo(X$flow), m, mean, fill = NA, align = "left")
   
   # filter to days only within the water year
   # start and end water year in ordinal days not accounting for leap years
-  wy.start <- yday(as.POSIXct(paste0("1900","-",wy.start, format="%Y-%m-%d")))
-  wy.end <- yday(as.POSIXct(paste0("1900","-",wy.end, format="%Y-%m-%d")))
+  wy.start <- lubridate::yday(as.POSIXct(paste0("1900","-",wy.start, format="%Y-%m-%d")))
+  wy.end <- lubridate::yday(as.POSIXct(paste0("1900","-",wy.end, format="%Y-%m-%d")))
   
   if (wy.start < wy.end) { 
     season <- c(wy.start:wy.end)
@@ -116,10 +117,10 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   X <- X[X$jday %in% season,]
   
   # summary of water years with missing flow data
-  qc.NA <- as.tbl(X) %>%
-    select(water.year, m.avg) %>%
-    group_by(water.year) %>%
-    summarise(na.count = sum(is.na(m.avg)))
+  qc.NA <- dplyr::as.tbl(X) %>%
+    dplyr::select(water.year, m.avg) %>%
+    dplyr::group_by(water.year) %>%
+    dplyr::summarise(na.count = sum(is.na(m.avg)))
   
   # the water years to keep
   keep.wy <- unique(qc.NA[qc.NA$na.count == 0,]$water.year)
@@ -129,10 +130,10 @@ dflow <- function(x, m, R, year.start=NA, year.end=NA, wy.start="10-01", wy.end=
   X <-X[X$water.year %in% keep.wy,]
   
   # vector of the lowest m-day rolling average flow in each water year
-  Y <- as.tbl(X) %>% 
-    select(water.year, m.avg) %>%
-    group_by(water.year) %>%
-    summarise(m.avg = min(m.avg, na.rm=TRUE))
+  Y <- dplyr::as.tbl(X) %>% 
+    dplyr::select(water.year, m.avg) %>%
+    dplyr::group_by(water.year) %>%
+    dplyr::summarise(m.avg = min(m.avg, na.rm=TRUE))
   
   Y <- Y[with(Y, order(m.avg)), ]
   
