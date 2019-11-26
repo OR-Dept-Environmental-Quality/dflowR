@@ -33,7 +33,7 @@ dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-3
 
 #--- USGS web download example ------------------------------------------------------------------------------------
 
-require(dataRetrieval)
+library(dataRetrieval)
 
 # download
 q.df <- readNWISdv(siteNumbers = "14174000",
@@ -51,7 +51,7 @@ dflow(x=q, m=7, R=10, year.start=NA, year.end=NA, wy.start="10-01", wy.end="09-3
 
 #--- OWRD web download example ------------------------------------------------------------------------------------
 
-require(RCurl)
+library(RCurl)
 
 stationID <- "14120000"
 start.date <- "10/1/1897"
