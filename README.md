@@ -24,7 +24,7 @@ Washington, DC, EPA/600/8-90/051 (NTIS 90-225616) https://nepis.epa.gov/Exe/ZyPD
 ## Install
 
 ```R
-devtools::install_github('DEQrmichie/dflowr', host = 'https://api.github.com', 
+devtools::install_github('DEQrmichie/dflow_r', host = 'https://api.github.com', 
                          dependencies= TRUE, force = TRUE, upgrade='never')
 ```
 
