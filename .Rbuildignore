@@ -1,0 +1,8 @@
+^dflowr\.Rproj$
+^\.Rproj\.user$
+^dflow_example\\.R$
+^.*\\.docx$
+^R_dev$
+R_dev
+dflow_example.R
+data_raw
