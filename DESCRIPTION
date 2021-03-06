@@ -1,0 +1,21 @@
+Package: dflowr
+Title: Design Flow Calculation
+Version: 0.01.0
+Authors@R: 
+    person(given = "Ryan",
+           family = "Michie",
+           role = c("aut", "cre"),
+           email = "Ryan.Michie@state.or.us")
+Description: R package to find the design flow based on methodology used in U.S. EPA's DFLOW program.
+Depends:
+    R (>= 3.5),
+Imports:
+    dplyr (>= 1.0.0),
+    lubridate (>= 1.7.0),
+    magrittr (>= 1.5),
+    zoo (>= 1.8.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
