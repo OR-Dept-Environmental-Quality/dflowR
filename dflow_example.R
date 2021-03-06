@@ -1,6 +1,10 @@
 
+library(devtools)
 
-library(dflowr)
+devtools::install_github('DEQrmichie/dflowR', host = 'https://api.github.com', 
+                         dependencies= TRUE, force = TRUE, upgrade='never')
+
+library(dflowR)
 
 #--- DFLOW examples using USGS text files included w/ DFLOW 3.1 download ------------------------------------------------------
 

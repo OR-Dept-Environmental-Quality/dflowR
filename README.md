@@ -1,4 +1,4 @@
-# dflowr
+# dflowR
 
 A R package to find the design flow based on methodology used in U.S. EPA's [DFLOW program][1]
 with a modification to account for missing flow data or days with zero flow. 
@@ -6,7 +6,7 @@ If there are missing flow data in any particular water year, all data from that 
 This approach is [recommended by EPA][2] (although not implemented in DFLOW 3.1) 
 and applied in USGS's [SWSTAT][3] program. 
 
-The methodology for this function is based on the equations contained in the DFLOW user manual 
+The methodology is based on the equations contained in the DFLOW user manual 
 as presented by Rossman (1999).
 
 I have double-checked that this function produces values consistent 
@@ -24,7 +24,7 @@ Washington, DC, EPA/600/8-90/051 (NTIS 90-225616) https://nepis.epa.gov/Exe/ZyPD
 ## Install
 
 ```R
-devtools::install_github('DEQrmichie/dflow_r', host = 'https://api.github.com', 
+devtools::install_github('DEQrmichie/dflowR', host = 'https://api.github.com', 
                          dependencies= TRUE, force = TRUE, upgrade='never')
 ```
 
