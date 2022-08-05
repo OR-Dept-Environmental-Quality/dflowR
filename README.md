@@ -18,11 +18,12 @@ This function produces values consistent  with DFLOW 3.1 (in cases without missi
 but there still may be areas  of the code that need improvement. Use at your own risk.
 
 References:
+
 Rossman, L A. 1990. DFLOW USER'S MANUAL. U.S. Environmental Protection Agency, 
 Washington, DC, EPA/600/8-90/051 (NTIS 90-225616) https://nepis.epa.gov/Exe/ZyPDF.cgi/30001JEH.PDF?Dockey=30001JEH.PDF
 
 [1]: https://www.epa.gov/ceam/dflow
-[1]: https://www.epa.gov/ceam/technical-support-dflow#xqy
+[2]: https://www.epa.gov/ceam/technical-support-dflow#xqy
 [3]: https://water.usgs.gov/software/SWSTAT/
 
 ## Install
