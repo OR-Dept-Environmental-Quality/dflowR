@@ -7,9 +7,14 @@
 #' and applied in USGS's [SWSTAT](https://water.usgs.gov/software/SWSTAT/) program. 
 #' 
 #' The methodology for this function is based on the equations contained in DFLOW user manual 
-#' as presented by Rossman (1999).
+#' as presented by Rossman (1999). Design flow is computed from the sample of lowest m-day
+#' average flow for each defined year, where "m" is the user supplied flow averaging period.
+#' The arithmetic averaging is used to calculate the m-day average flows. A log Pearson Type III
+#' probability distribution is fitted to the annual minimum m-day flows. The design
+#' flow is the value from the distribution whose probability of not being exceeded is 1/r where r
+#' is the user-supplied return period.
 #' 
-#' If a particular season is desired, set wy.start and wyend arguments to correspond to the beginning
+#' If a particular season is desired, set wystart and wyend arguments to correspond to the beginning
 #' and ending dates of the season. The season does not have to span an entire year. Only flow records 
 #' that fall within the season will be used in the calculations.
 #'
@@ -52,7 +57,7 @@ dflow <- function(x, m, r, yearstart=NA, yearend=NA, wystart="10-01", wyend="09-
     stop("Data types are not correct. x[,1] must be POSIXct and x[,2] must be numeric.", call. = TRUE)
   }
   
-  colnames(X) <-c("date", "flow")
+  colnames(X) <- c("date", "flow")
   
   if (is.na(yearstart)) {
     yearstart <- lubridate::year(min(X$date))

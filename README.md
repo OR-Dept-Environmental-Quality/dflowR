@@ -7,11 +7,15 @@ This approach is [recommended by EPA][2] (although not implemented in DFLOW 3.1)
 and applied in USGS's [SWSTAT][3] program. 
 
 The methodology is based on the equations contained in the DFLOW user manual 
-as presented by Rossman (1999).
+as presented by Rossman (1999). Design flow is computed from the sample of lowest m-day
+average flow for each defined year, where "m" is the user supplied flow averaging period.
+The arithmetic averaging is used to calculate the m-day average flows. A log Pearson Type III
+probability distribution is fitted to the annual minimum m-day flows. The design
+flow is the value from the distribution whose probability of not being exceeded is 1/r where r
+is the user-supplied return period.
 
-I have double-checked that this function produces values consistent 
-with DFLOW 3.1 (in cases without missing data), but there still may be areas 
-of the code that need improvement. Use at your own risk.
+This function produces values consistent  with DFLOW 3.1 (in cases without missing data), 
+but there still may be areas  of the code that need improvement. Use at your own risk.
 
 References:
 Rossman, L A. 1990. DFLOW USER'S MANUAL. U.S. Environmental Protection Agency, 
