@@ -15,7 +15,7 @@ dflow(
 )
 }
 \arguments{
-\item{x}{Data frame where col 1 = POSIXct date and col 2 = numeric daily mean flow}
+\item{x}{Data frame where col 1 = POSIXct date and col 2 = numeric daily mean flow rate}
 
 \item{m}{Flow averaging period in days}
 

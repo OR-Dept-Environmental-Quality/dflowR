@@ -29,9 +29,9 @@ Washington, DC, EPA/600/8-90/051 (NTIS 90-225616) https://nepis.epa.gov/Exe/ZyPD
 ## Install
 
 ```R
-devtools::install_github('OR-Dept-Environmental-Quality/dflowR', 
-                         host = 'https://api.github.com', 
-                         dependencies= TRUE, force = TRUE, upgrade='never')
+devtools::install_github("OR-Dept-Environmental-Quality/dflowR"", 
+                         host = "https://api.github.com", 
+                         dependencies = TRUE, force = TRUE, upgrade = "never")
 ```
 
 ## Usage
@@ -75,11 +75,12 @@ library(dflowr)
 
 # -- Example using USGS text files included w/ DFLOW 3.1 download ----
 
-q.df  <- read.table(file= "C:/Program Files (x86)/DFLOW 3.1b/usgs02072000.txt", header = TRUE, sep ="\t", 
-                    skip=29, stringsAsFactors=FALSE )
-q <- q.df[,c(3,4)]
-colnames(q) <-c("date", "flow")
-q$date <- as.POSIXct(q$date, format="%m/%d/%Y")
+q.df  <- read.table(file= "C:/Program Files (x86)/DFLOW 3.1b/usgs02072000.txt",
+                    header = TRUE, sep = "\t", skip = 29, 
+                    stringsAsFactors = FALSE )
+q <- q.df[, c(3,4)]
+colnames(q) <- c("date", "flow")
+q$date <- as.POSIXct(q$date, format = "%m/%d/%Y")
 
 dflow(x=q, m=7, r=10, yearstart=NA, yearend=NA, wystart="10-01", wyend="09-30")
 
@@ -93,9 +94,10 @@ q.df <- readNWISdv(siteNumbers = "14174000",
                    statCd = "00003")
 
 # Just get columns 3 and 4 (date and flow)
-q <- q.df[,c(3,4)]
-colnames(q) <-c("date", "flow")
-q$date <- as.POSIXct(q$date, format="%Y-%m-%d")
+q <- q.df[, c(3,4)]
+colnames(q) <- c("date", "flow")
+q$date <- as.POSIXct(q$date, format = "%Y-%m-%d", tz = "UTC")
 
-dflow(x=q, m=7, r=10, yearstart=NA, yearend=NA, wystart="10-01", wyend="09-30")
+dflow(x = q, m = 7, r = 10, yearstart = NA, yearend = NA, 
+wystart = "10-01", wyend = "09-30")
 ```
