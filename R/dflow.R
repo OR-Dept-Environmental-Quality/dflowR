@@ -100,8 +100,6 @@ dflow <-
     
     X <- dplyr::left_join(x = date99, y = X, by = "date2")
     
-    #X <- merge(x=date99, y=X, by="date2", all.x=TRUE)
-    
     # back to POSIXct
     X$date <- as.POSIXct(X$date2, format = "%m/%d/%Y")
     X$date2 <- NULL
@@ -129,10 +127,6 @@ dflow <-
     
     X <- X[with(X, order(date)),]
     
-    # Calculate the m-days rolling average
-    X$m.avg <-
-      zoo::rollapply(zoo::zoo(X$flow), m, mean, fill = NA, align = "left")
-    
     # filter to days only within the water year
     # start and end water year in ordinal days not accounting for leap years
     wystart <-
@@ -140,6 +134,7 @@ dflow <-
     wyend <-
       lubridate::yday(as.POSIXct(paste0("1900", "-", wyend, format = "%Y-%m-%d")))
     
+    # set the season based on when user set wystart and wyend ordinal days
     if (wystart < wyend) {
       season <- c(wystart:wyend)
     } else {
@@ -149,11 +144,28 @@ dflow <-
     # limit to dates in the water year season
     X <- X[X$jday %in% season, ]
     
+    # Calculate the m-days rolling average 
+    #(AJB - moved from above so that m.avg is only calculated using the dates within the season
+    #this better aligns with how DFLOW does calculations
+    #copied code from above that used the character vector of all dates so that when rollapply is used 
+    #on seasonal data the function doesn't cross water years (otherwise if you have a dataframe that only
+    #includes the specified season the rollapply function will cross water years))
+    
+    X$date2 <- format(X$date, "%m/%d/%Y")
+    X <- dplyr::left_join(x = date99, y = X, by = "date2")
+    X$date <- as.POSIXct(X$date2, format = "%m/%d/%Y")
+    X$date2 <- NULL
+    X$m.avg <- zoo::rollapply(zoo::zoo(X$flow), m, mean, fill = NA, align = "left")
+    
     # summary of water years with missing flow data
+    # (AJB - changed m.avg to flow - 
+    # if we are only calculating m.avg using seasonal dates then there will be NAs that are due to 
+    # rollapply and not because the data was actually missing
+    
     qc.NA <- X %>%
-      dplyr::select(water.year, m.avg) %>%
+      dplyr::select(water.year, flow) %>%
       dplyr::group_by(water.year) %>%
-      dplyr::summarise(na.count = sum(is.na(m.avg)))
+      dplyr::summarise(na.count = sum(is.na(flow)))
     
     # the water years to keep
     keep.wy <- unique(qc.NA[qc.NA$na.count == 0, ]$water.year)
@@ -161,6 +173,8 @@ dflow <-
     # remove NAs and water years with missing flow data
     X <- X[!is.na(X$m.avg), ]
     X <- X[X$water.year %in% keep.wy, ]
+    
+    
     
     # vector of the lowest m-day rolling average flow in each water year
     Y <- X %>%
