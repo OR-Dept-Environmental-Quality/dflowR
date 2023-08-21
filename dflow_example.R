@@ -81,8 +81,7 @@ d.url <- paste0("http://apps.wrd.state.or.us/apps/sw/hydro_near_real_time/hydro_
 
 url.content <- getURL(d.url)
 
-q.df <-
-  read.table(file = textConnection(url.content), header = TRUE, sep = "\t", 
+q.df <- read.table(file = textConnection(url.content), header = TRUE, sep = "\t", 
              skip = 0, stringsAsFactors = FALSE)
 
 # get columns 2 and 3 (date and flow)

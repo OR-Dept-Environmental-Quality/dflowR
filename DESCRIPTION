@@ -1,6 +1,6 @@
 Package: dflowR
 Title: Design Flow Calculation
-Version: 0.01.1
+Version: 0.2.0
 Authors@R: 
     person(given = "Ryan",
            family = "Michie",
